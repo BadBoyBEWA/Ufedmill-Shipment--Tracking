@@ -3,7 +3,7 @@
  * Handles: base URL, auth tokens, token refresh on 401, JSON parsing.
  */
 
-const API_BASE_URL = 'https://ufedmill-shipment-tracking.onrender.com';
+const API_BASE_URL = 'https://ufedmill-shipment-tracking.onrender.com/api';
 
 async function refreshAccessToken() {
   try {
