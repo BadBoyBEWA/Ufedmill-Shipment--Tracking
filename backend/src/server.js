@@ -105,11 +105,10 @@ app.use((err, req, res, next) => {
 // ============================================================
 // Start server
 // ============================================================
-if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
-  app.listen(PORT, () => {
-    console.log(`🚀 Ufedmill API running on http://localhost:${PORT}`);
-    console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
-  });
-}
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Ufedmill API running on port ${PORT}`);
+  console.log(`   Environment: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   Frontend URL: ${process.env.FRONTEND_URL || 'Not set'}`);
+});
 
 module.exports = app;

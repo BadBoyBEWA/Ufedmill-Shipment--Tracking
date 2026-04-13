@@ -54,3 +54,6 @@ debug/
 [Dd]ebug/
 **/debug/
 **/[Dd]ebug/
+
+.vercel
+.env*.local
