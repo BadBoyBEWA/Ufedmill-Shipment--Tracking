@@ -2,10 +2,10 @@ const express = require('express');
 const router = express.Router();
 const authController = require('../controllers/authController');
 const { authenticateToken } = require('../middleware/auth');
-const { validateLogin } = require('../middleware/validation');
+const { loginValidation} = require('../middleware/validation');
 
 // Public routes
-router.post('/login', validateLogin, authController.login);
+router.post('/login', loginValidation, authController.login);
 router.post('/forgot-password', authController.requestPasswordReset);
 router.post('/reset-password', authController.resetPassword);
 router.post('/refresh-token', authController.refreshToken);
