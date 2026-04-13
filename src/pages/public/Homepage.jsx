@@ -62,7 +62,7 @@ export default function Homepage() {
                 <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Annual Tons</p>
               </div>
               <div className="bg-white/5 backdrop-blur-sm p-8 rounded-3xl border border-white/10 mt-8">
-                <p className="text-[var(--color-secondary-container)] text-4xl font-black mb-2">0.02s</p>
+                <p className="text-[var(--color-secondary-container)] text-4xl font-black mb-2">0.04s</p>
                 <p className="text-white/60 text-xs font-bold uppercase tracking-widest">API Latency</p>
               </div>
             </div>
