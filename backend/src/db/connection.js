@@ -10,17 +10,13 @@ const pool = new Pool({
 
 pool.on('error', (err) => {
   console.error('Unexpected DB pool error:', err);
-  process.exit(-1);
+  // In serverless environments, we should not call process.exit
+  if (process.env.NODE_ENV !== 'production') {
+    process.exit(-1);
+  }
 });
 
-// Test connection on startup
-pool.connect((err, client, release) => {
-  if (err) {
-    console.error('❌ Database connection failed:', err.stack);
-    process.exit(1);
-  }
-  console.log('✅ PostgreSQL connected successfully');
-  release();
-});
+// Startup test removed for serverless compatibility.
+// Connections will be established on-demand.
 
 module.exports = pool;

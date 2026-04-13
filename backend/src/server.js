@@ -6,8 +6,8 @@ require('dotenv').config();
 const CRITICAL_ENV = ['JWT_SECRET', 'REFRESH_TOKEN_SECRET', 'DATABASE_URL', 'FRONTEND_URL'];
 for (const key of CRITICAL_ENV) {
   if (!process.env[key]) {
-    console.error(`❌ Missing critical environment variable: ${key}`);
-    process.exit(1);
+    console.error(`❌ Critical environment variable missing: ${key}`);
+    // Do not call process.exit(1) in production serverless environments
   }
 }
 
