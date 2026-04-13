@@ -1,22 +1,38 @@
-const { Pool } = require('@neondatabase/serverless');
+const { neon } = require('@neondatabase/serverless');
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
-  max: 20,
-  idleTimeoutMillis: 60000,
-  connectionTimeoutMillis: 10000,
-});
+// Create a single connection instance
+let sql = null;
 
-pool.on('error', (err) => {
-  console.error('Unexpected DB pool error:', err);
-  // In serverless environments, we should not call process.exit
-  if (process.env.NODE_ENV !== 'production') {
-    process.exit(-1);
+function getConnection() {
+  if (!sql) {
+    const databaseUrl = process.env.DATABASE_URL;
+    
+    if (!databaseUrl) {
+      console.error('DATABASE_URL is not set');
+      return null;
+    }
+    
+    sql = neon(databaseUrl);
   }
-});
+  return sql;
+}
 
-// Startup test removed for serverless compatibility.
-// Connections will be established on-demand.
+async function query(text, params = []) {
+  const client = getConnection();
+  if (!client) {
+    throw new Error('Database not configured');
+  }
+  
+  try {
+    const result = await client(text, params);
+    return { rows: result };
+  } catch (error) {
+    console.error('Database query error:', error);
+    throw error;
+  }
+}
 
-module.exports = pool;
+module.exports = {
+  query,
+  getConnection
+};
