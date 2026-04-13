@@ -13,7 +13,6 @@
     "seed": "node scripts/seed-sample-data.js"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^1.0.2",
     "bcrypt": "^6.0.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.7",
@@ -26,7 +25,7 @@
     "jsonwebtoken": "^9.0.3",
     "nodemailer": "^8.0.5",
     "nodemailer-mailgun-transport": "^2.1.5",
-    "pg": "^8.13.3",
+    "pg": "^8.20.0",
     "uuid": "^11.1.0"
   },
   "devDependencies": {

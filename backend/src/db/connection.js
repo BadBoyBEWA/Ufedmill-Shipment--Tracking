@@ -1,31 +1,16 @@
-const { neon } = require('@neondatabase/serverless');
+const { Pool } = require('pg');
 
-// Create a single connection instance
-let sql = null;
-
-function getConnection() {
-  if (!sql) {
-    const databaseUrl = process.env.DATABASE_URL;
-    
-    if (!databaseUrl) {
-      console.error('DATABASE_URL is not set');
-      return null;
-    }
-    
-    sql = neon(databaseUrl);
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false  // Required for Neon
   }
-  return sql;
-}
+});
 
 async function query(text, params = []) {
-  const client = getConnection();
-  if (!client) {
-    throw new Error('Database not configured');
-  }
-  
   try {
-    const result = await client(text, params);
-    return { rows: result };
+    const result = await pool.query(text, params);
+    return result;
   } catch (error) {
     console.error('Database query error:', error);
     throw error;
@@ -34,5 +19,5 @@ async function query(text, params = []) {
 
 module.exports = {
   query,
-  getConnection
+  pool
 };
