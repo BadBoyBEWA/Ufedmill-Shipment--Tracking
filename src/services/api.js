@@ -3,11 +3,11 @@
  * Handles: base URL, auth tokens, token refresh on 401, JSON parsing.
  */
 
-const BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = 'https://ufedmill-shipment-tracking.onrender.com';
 
 async function refreshAccessToken() {
   try {
-    const res = await fetch(`${BASE_URL}/admin/refresh`, {
+    const res = await fetch(`${API_BASE_URL}/admin/refresh`, {
       method: 'POST',
       credentials: 'include', // Send the HTTP-only refresh token cookie
     });
@@ -48,7 +48,7 @@ async function request(path, options = {}, retry = true) {
     headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${BASE_URL}${path}`, {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
     credentials: 'include', // Always include cookies for refresh token
