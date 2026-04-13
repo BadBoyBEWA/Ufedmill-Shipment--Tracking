@@ -78,6 +78,15 @@ app.use(apiRateLimiter);
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
+app.get('/api/db-test', async (req, res) => {
+  try {
+    const db = require('./db/connection');
+    const result = await db.query('SELECT NOW()');
+    res.json({ success: true, time: result.rows[0] });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // ============================================================
 // Routes
