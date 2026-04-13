@@ -1,6 +1,7 @@
 {
   "name": "ufedmill-backend",
   "version": "1.0.0",
+  "type": "commonjs",
   "description": "Ufedmill Shipment Tracker API",
   "main": "src/server.js",
   "scripts": {
