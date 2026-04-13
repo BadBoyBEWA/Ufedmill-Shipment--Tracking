@@ -242,14 +242,20 @@ const refreshToken = async (req, res) => {
 // @desc    Logout
 // @route   POST /api/admin/logout
 // @access  Private
+// @desc    Logout
+// @route   POST /api/admin/logout
+// @access  Private
 const logout = async (req, res) => {
   try {
     const { refreshToken } = req.body;
-
-    if (refreshToken) {
+    
+    // Optional: Also delete all refresh tokens for this admin
+    if (req.admin && req.admin.id) {
+      await db.query('DELETE FROM refresh_tokens WHERE admin_id = $1', [req.admin.id]);
+    } else if (refreshToken) {
       await db.query('DELETE FROM refresh_tokens WHERE token = $1', [refreshToken]);
     }
-
+    
     res.json({ message: 'Logged out successfully' });
   } catch (error) {
     console.error('Logout error:', error);
@@ -257,23 +263,25 @@ const logout = async (req, res) => {
   }
 };
 
+
 // @desc    Get current user
 // @route   GET /api/admin/me
 // @access  Private
 const getCurrentUser = async (req, res) => {
   try {
-    const result = await db.query(
-      'SELECT id, email, username, created_at FROM admins WHERE id = $1',
-      [req.user.id]
-    );
-
-    const users = result.rows || result;
-
-    if (users.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+    // Your requireAuth middleware attaches the admin to req.admin
+    const admin = req.admin;
+    
+    if (!admin) {
+      return res.status(401).json({ error: 'Not authenticated' });
     }
-
-    res.json(users[0]);
+    
+    res.json({
+      id: admin.id,
+      email: admin.email,
+      username: admin.full_name || admin.username,
+      role: admin.role
+    });
   } catch (error) {
     console.error('Get user error:', error);
     res.status(500).json({ error: 'Internal server error' });
