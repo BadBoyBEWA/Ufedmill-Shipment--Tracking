@@ -279,12 +279,11 @@ const getCurrentUser = async (req, res) => {
     res.json({
       id: admin.id,
       email: admin.email,
-      username: admin.full_name || admin.username,
-      role: admin.role
+      username: admin.username
     });
   } catch (error) {
     console.error('Get user error:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal server error.' });
   }
 };
 
