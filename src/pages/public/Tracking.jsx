@@ -91,9 +91,19 @@ export default function Tracking() {
   return (
     <>
       {isMobile ? (
-        <MobileResults shipment={shipment} />
+        <MobileResults 
+          shipment={shipment} 
+          inputVal={inputVal} 
+          setInputVal={setInputVal} 
+          handleSearch={handleSearch} 
+        />
       ) : (
-        <DesktopResults shipment={shipment} />
+        <DesktopResults 
+          shipment={shipment} 
+          inputVal={inputVal} 
+          setInputVal={setInputVal} 
+          handleSearch={handleSearch} 
+        />
       )}
       <ChatWidget trackingId={shipment.tracking_id} />
       <style>{`
@@ -104,6 +114,30 @@ export default function Tracking() {
       `}</style>
     </>
   );
+}
+
+/* --- Shared Components --- */
+function QuickSearch({ inputVal, setInputVal, handleSearch, isMobile = false }) {
+    return (
+        <form onSubmit={handleSearch} className={`flex items-center gap-2 ${isMobile ? 'w-full' : 'max-w-md'}`}>
+            <div className="relative flex-1">
+                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-variant)] text-lg">search</span>
+                <input
+                    type="text"
+                    className={`w-full bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)] rounded-xl px-10 py-2.5 text-xs font-bold outline-none border border-transparent focus:border-[var(--color-primary)]/30 transition-all`}
+                    placeholder="Quick search ID..."
+                    value={inputVal}
+                    onChange={(e) => setInputVal(e.target.value)}
+                />
+            </div>
+            <button 
+              type="submit" 
+              className="bg-[var(--color-primary)] text-white px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-[var(--color-primary-container)] transition-colors shadow-sm"
+            >
+              Update
+            </button>
+        </form>
+    );
 }
 
 /* --- Search & States --- */
@@ -168,7 +202,7 @@ function TrackingError({ error, inputVal, setInputVal, handleSearch }) {
 }
 
 /* --- Mobile Results (DEDICATED VIEW) --- */
-function MobileResults({ shipment }) {
+function MobileResults({ shipment, inputVal, setInputVal, handleSearch }) {
   const currentStepIdx = STATUS_INDEX[shipment.status] ?? 0;
   const history = [...(shipment.status_history || [])].reverse();
 
@@ -353,6 +387,19 @@ function MobileResults({ shipment }) {
             <p className="text-[11px] text-[#86a0cd] font-bold leading-relaxed mb-6 opacity-80 uppercase tracking-widest">Connect with our dedicated fleet coordinators for real-time adjustments.</p>
             <button className="w-full bg-[#fea619] text-[#684000] font-black py-4 rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-lg shadow-[#fea619]/20 active:scale-95 transition-all">Secure Messaging</button>
         </div>
+
+        {/* Quick Search at Bottom */}
+        <section className="pt-4">
+          <div className="bg-white/40 border border-slate-100 p-6 rounded-3xl">
+            <h3 className="text-[10px] font-black text-[#002045] uppercase tracking-widest mb-4">Track Another Package</h3>
+            <QuickSearch 
+              inputVal={inputVal} 
+              setInputVal={setInputVal} 
+              handleSearch={handleSearch} 
+              isMobile={true} 
+            />
+          </div>
+        </section>
       </main>
 
       {/* Mobile Bottom Bar */}
@@ -377,7 +424,7 @@ function MobileResults({ shipment }) {
 }
 
 /* --- Desktop Results (EXISTING REFINED VIEW) --- */
-function DesktopResults({ shipment }) {
+function DesktopResults({ shipment, inputVal, setInputVal, handleSearch }) {
   const currentStepIdx = STATUS_INDEX[shipment.status] ?? 0;
   const history = [...(shipment.status_history || [])].reverse();
 
@@ -551,6 +598,13 @@ function DesktopResults({ shipment }) {
                     </div>
                 </div>
             </div>
+
+            {/* Desktop Quick Search at Bottom */}
+            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
+                <h3 className="text-xs font-black text-[#002045] uppercase tracking-widest mb-4">Track Another Shipment</h3>
+                <QuickSearch inputVal={inputVal} setInputVal={setInputVal} handleSearch={handleSearch} />
+            </div>
+
             <div className="grid grid-cols-2 gap-4">
                 <div className="bg-[#eff4ff] p-6 rounded-xl space-y-2">
                     <span className="material-symbols-outlined text-[#855300]" style={{ fontVariationSettings: "'FILL' 1" }}>package_2</span>
@@ -577,7 +631,7 @@ function ChatWidget({ trackingId }) {
   const fetchMessages = async () => {
     if (!trackingId || !isOpen) return;
     try {
-      const res = await api.get(`/messages/${trackingId}`);
+      const res = await api.get(`/messages/${trackingId}`, true);
       if (!res.ok) return;
       const data = await res.json();
       setMessages(data);
@@ -600,7 +654,7 @@ function ChatWidget({ trackingId }) {
     e.preventDefault();
     if (!inputText.trim() || !trackingId) return;
     try {
-      const res = await api.post('/messages', { tracking_id: trackingId, content: inputText, sender_type: 'user' });
+      const res = await api.post('/messages', { tracking_id: trackingId, content: inputText, sender_type: 'user' }, true);
       if (res.ok) {
         const newMessage = await res.json();
         setMessages([...messages, newMessage]);

@@ -5,17 +5,19 @@
 
 const API_BASE_URL = 'https://ufedmill-shipment-tracking.onrender.com/api';
 
-async function refreshAccessToken() {
+async function refreshAccessToken(skipAuthRedirect = false) {
   try {
     const res = await fetch(`${API_BASE_URL}/admin/refresh`, {
       method: 'POST',
-      credentials: 'include', // Send the HTTP-only refresh token cookie
+      credentials: 'include',
     });
 
     if (!res.ok) {
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('adminUser');
-      window.location.href = '/admin/login';
+      if (!skipAuthRedirect) {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('adminUser');
+        window.location.href = '/admin/login';
+      }
       return null;
     }
 
@@ -23,9 +25,11 @@ async function refreshAccessToken() {
     localStorage.setItem('accessToken', data.accessToken);
     return data.accessToken;
   } catch {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('adminUser');
-    window.location.href = '/admin/login';
+    if (!skipAuthRedirect) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('adminUser');
+      window.location.href = '/admin/login';
+    }
     return null;
   }
 }
@@ -35,8 +39,9 @@ async function refreshAccessToken() {
  * @param {string} path - API path (e.g., '/shipments')
  * @param {RequestInit} options - fetch options
  * @param {boolean} retry - whether to retry after token refresh (internal flag)
+ * @param {boolean} skipAuthRedirect - if true, don't redirect to login on failure
  */
-async function request(path, options = {}, retry = true) {
+async function request(path, options = {}, retry = true, skipAuthRedirect = false) {
   const token = localStorage.getItem('accessToken');
 
   const headers = {
@@ -51,17 +56,14 @@ async function request(path, options = {}, retry = true) {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...options,
     headers,
-    credentials: 'include', // Always include cookies for refresh token
+    credentials: 'include',
   });
 
-  // Attempt token refresh on 401
   if (response.status === 401 && retry) {
     const data = await response.json().catch(() => ({}));
-    if (data.code === 'TOKEN_EXPIRED' || response.status === 401) {
-      const newToken = await refreshAccessToken();
-      if (newToken) {
-        return request(path, options, false); // Retry once
-      }
+    const newToken = await refreshAccessToken(skipAuthRedirect);
+    if (newToken) {
+      return request(path, options, false, skipAuthRedirect);
     }
     return response;
   }
@@ -73,21 +75,21 @@ async function request(path, options = {}, retry = true) {
 // Convenience methods
 // ============================================================
 const api = {
-  get: (path) => request(path, { method: 'GET' }),
+  get: (path, skipAuthRedirect = false) => request(path, { method: 'GET' }, true, skipAuthRedirect),
 
-  post: (path, body) =>
+  post: (path, body, skipAuthRedirect = false) =>
     request(path, {
       method: 'POST',
       body: JSON.stringify(body),
-    }),
+    }, true, skipAuthRedirect),
 
-  put: (path, body) =>
+  put: (path, body, skipAuthRedirect = false) =>
     request(path, {
       method: 'PUT',
       body: JSON.stringify(body),
-    }),
+    }, true, skipAuthRedirect),
 
-  delete: (path) => request(path, { method: 'DELETE' }),
+  delete: (path, skipAuthRedirect = false) => request(path, { method: 'DELETE' }, true, skipAuthRedirect),
 
   /**
    * Parses a response, throwing an error with the API error message if not ok.
