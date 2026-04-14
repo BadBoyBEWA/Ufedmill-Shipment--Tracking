@@ -69,35 +69,48 @@ export default function LiveChat() {
   };
 
   return (
-    <div className="flex-1 flex overflow-hidden h-[calc(100vh-80px)]">
+    <div className="flex-1 flex overflow-hidden h-[calc(100vh-80px)] relative">
       {/* Conversation List */}
-      <section className="w-full max-w-xs lg:max-w-md bg-[var(--color-surface-container-low)] flex flex-col border-r border-[var(--color-outline-variant)]/10">
-        <div className="p-6">
-          <h2 className="text-xl font-black text-[var(--color-primary)] mb-4">Active Streams</h2>
+      <section className={`
+        ${selectedId ? 'hidden md:flex' : 'flex'} 
+        w-full md:w-80 lg:w-96 bg-[var(--color-surface-container-low)] flex-col border-r border-[var(--color-outline-variant)]/10 z-20
+      `}>
+        <div className="p-4 md:p-6">
+          <h2 className="text-lg md:text-xl font-black text-[var(--color-primary)] mb-4 uppercase tracking-tighter">Active Streams</h2>
           <div className="relative">
             <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-variant)] opacity-50 text-sm">search</span>
-            <input className="w-full outline-none bg-[var(--color-surface-container-high)] border-none rounded-xl pl-10 pr-4 py-2 text-xs focus:ring-2 focus:ring-[var(--color-primary)]/20" placeholder="Filter streams..." type="text"/>
+            <input 
+              className="w-full outline-none bg-white border border-slate-100 rounded-2xl pl-10 pr-4 py-3 text-xs focus:ring-4 focus:ring-[#002045]/5 focus:border-[#002045]/10" 
+              placeholder="Filter streams..." 
+              type="text"
+            />
           </div>
         </div>
-        <div className="flex-1 overflow-y-auto px-3 space-y-1 pb-10">
+        <div className="flex-1 overflow-y-auto px-3 space-y-1 pb-20 md:pb-10">
           {conversations.length > 0 ? (
             conversations.map((conv) => (
               <button
                 key={conv.tracking_id}
                 onClick={() => setSelectedId(conv.tracking_id)}
-                className={`w-full p-4 rounded-2xl flex items-center gap-4 transition-all ${selectedId === conv.tracking_id ? 'bg-white shadow-md border-l-4 border-[var(--color-secondary)]' : 'hover:bg-white/40'}`}
+                className={`w-full p-4 rounded-2xl flex items-center gap-4 transition-all ${
+                  selectedId === conv.tracking_id 
+                    ? 'bg-white shadow-lg shadow-[#002045]/5 ring-1 ring-[#002045]/5' 
+                    : 'hover:bg-white/40'
+                }`}
               >
-                <div className="w-10 h-10 rounded-full bg-[var(--color-primary)] flex items-center justify-center text-white text-xs font-bold shrink-0">
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-black shrink-0 transition-colors ${
+                  selectedId === conv.tracking_id ? 'bg-[#002045] text-white' : 'bg-slate-200 text-slate-500'
+                }`}>
                   {conv.tracking_id.substring(0, 2)}
                 </div>
-                <div className="text-left overflow-hidden">
-                  <p className="font-bold text-sm text-[var(--color-primary)] truncate">{conv.tracking_id}</p>
-                  <p className="text-[10px] text-[var(--color-on-surface-variant)] opacity-70">
-                    Last: {new Date(conv.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                <div className="text-left overflow-hidden flex-1">
+                  <p className="font-black text-xs text-[#002045] truncate uppercase tracking-tight">{conv.tracking_id}</p>
+                  <p className="text-[9px] text-[var(--color-on-surface-variant)] font-bold opacity-60 uppercase tracking-widest mt-0.5">
+                    {new Date(conv.last_message_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
                 {conv.unread_count > 0 && selectedId !== conv.tracking_id && (
-                  <span className="ml-auto w-5 h-5 bg-[var(--color-secondary)] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  <span className="w-5 h-5 bg-[#fea619] text-[#002045] text-[9px] font-black rounded-full flex items-center justify-center animate-pulse">
                     {conv.unread_count}
                   </span>
                 )}
@@ -106,43 +119,54 @@ export default function LiveChat() {
           ) : (
             <div className="flex flex-col items-center justify-center py-20 px-6 text-center opacity-40">
               <span className="material-symbols-outlined text-4xl mb-4">forum</span>
-              <p className="text-xs font-bold uppercase tracking-widest">No Active Streams</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.2em]">No Active Streams</p>
             </div>
           )}
         </div>
       </section>
 
       {/* Active Chat Window */}
-      <section className="flex-1 bg-[var(--color-surface-container-lowest)] flex flex-col items-center justify-center overflow-hidden">
+      <section className={`
+        ${selectedId ? 'flex' : 'hidden md:flex'} 
+        flex-1 bg-white flex-col items-center justify-center overflow-hidden h-full z-30
+      `}>
         {selectedId ? (
           <>
             {/* Header */}
-            <div className="w-full p-6 border-b border-[var(--color-outline-variant)]/10 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-[var(--color-secondary)]/10 flex items-center justify-center text-[var(--color-secondary)] font-bold">
-                  {selectedId.substring(0, 1)}
+            <div className="w-full p-4 md:p-6 border-b border-slate-100 flex items-center gap-4 bg-white/80 backdrop-blur-md sticky top-0 z-10">
+              <button 
+                onClick={() => setSelectedId(null)}
+                className="md:hidden w-10 h-10 flex items-center justify-center text-[#002045] hover:bg-slate-100 rounded-full transition-colors"
+                aria-label="Back to conversations"
+              >
+                <span className="material-symbols-outlined">arrow_back</span>
+              </button>
+              
+              <div className="flex items-center gap-3 flex-1 overflow-hidden">
+                <div className="w-10 h-10 rounded-full bg-[#fea619]/10 flex items-center justify-center text-[#855300] font-black shrink-0 text-sm ring-1 ring-[#fea619]/20">
+                  {selectedId.substring(0, 2)}
                 </div>
-                <div>
-                  <h3 className="font-black text-[var(--color-primary)]">{selectedId}</h3>
-                  <p className="text-[10px] text-green-600 font-bold uppercase tracking-widest flex items-center gap-1">
+                <div className="overflow-hidden">
+                  <h3 className="font-black text-[#002045] text-sm md:text-base truncate uppercase italic tracking-tighter">{selectedId}</h3>
+                  <p className="text-[10px] text-green-600 font-black uppercase tracking-[0.1em] flex items-center gap-1.5 opacity-80 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
-                    Direct Link Active
+                    Operational encrypted feed
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Chat History */}
-            <div className="flex-1 w-full overflow-y-auto p-8 space-y-6 flex flex-col scrollbar-thin scrollbar-thumb-[var(--color-surface-container-highest)] scrollbar-track-transparent">
+            <div className="flex-1 w-full overflow-y-auto p-4 md:p-8 space-y-4 md:space-y-6 flex flex-col scroll-smooth">
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.sender_type === 'admin' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] p-4 rounded-2xl text-sm ${
+                  <div className={`max-w-[85%] md:max-w-[70%] p-4 rounded-3xl text-xs md:text-sm shadow-sm transition-all ${
                     msg.sender_type === 'admin' 
-                      ? 'bg-[var(--color-primary)] text-white rounded-tr-none' 
-                      : 'bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)] rounded-tl-none'
+                      ? 'bg-[#002045] text-white rounded-tr-none' 
+                      : 'bg-[#eff4ff] text-[#002045] rounded-tl-none border border-blue-50'
                   }`}>
-                    <p>{msg.content}</p>
-                    <p className={`text-[9px] mt-2 opacity-50 font-bold ${msg.sender_type === 'admin' ? 'text-right' : 'text-left'}`}>
+                    <p className="leading-relaxed font-medium">{msg.content}</p>
+                    <p className={`text-[9px] mt-2 opacity-40 font-black uppercase tracking-widest ${msg.sender_type === 'admin' ? 'text-right' : 'text-left'}`}>
                       {new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
@@ -152,33 +176,39 @@ export default function LiveChat() {
             </div>
 
             {/* Input Area */}
-            <div className="w-full p-8 border-t border-[var(--color-outline-variant)]/10 bg-[var(--color-surface-container-low)]">
-              <div className="flex items-end gap-4 bg-white p-2 rounded-2xl shadow-inner-lg">
+            <div className="w-full p-4 md:p-8 border-t border-slate-100 bg-slate-50/50">
+              <div className="flex items-end gap-3 md:gap-4 bg-white p-2 rounded-[2rem] shadow-xl shadow-[#002045]/5 ring-1 ring-[#002045]/5">
                 <textarea
-                  className="flex-1 outline-none border-none focus:ring-0 py-3 px-4 text-sm resize-none placeholder:opacity-40"
+                  className="flex-1 outline-none border-none focus:ring-0 py-3 px-4 text-xs md:text-sm resize-none placeholder:opacity-40 min-h-[44px] max-h-32 font-medium"
                   placeholder="Type an authoritative response..."
                   rows="1"
                   value={inputText}
-                  onChange={(e) => setInputText(e.target.value)}
+                  onChange={(e) => {
+                    setInputText(e.target.value);
+                    e.target.style.height = 'auto';
+                    e.target.style.height = e.target.scrollHeight + 'px';
+                  }}
                   onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSendMessage(); } }}
                 ></textarea>
                 <div className="p-1">
                   <button
                     onClick={handleSendMessage}
                     disabled={!inputText.trim()}
-                    className="bg-[var(--color-secondary-container)] text-[var(--color-on-secondary-container)] p-3 rounded-xl shadow-lg hover:shadow-[var(--color-secondary)]/20 transition-all active:scale-95 flex items-center justify-center disabled:opacity-50"
+                    className="bg-[#fea619] text-[#002045] w-10 h-10 md:w-12 md:h-12 rounded-full shadow-lg shadow-[#fea619]/20 hover:scale-105 transition-all active:scale-95 flex items-center justify-center disabled:opacity-30"
                   >
-                    <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>send</span>
+                    <span className="material-symbols-outlined text-lg md:text-xl" style={{ fontVariationSettings: "'FILL' 1" }}>send</span>
                   </button>
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <div className="text-center opacity-30">
-            <span className="material-symbols-outlined text-6xl mb-4">chat_bubble_outline</span>
-            <h3 className="text-xl font-black uppercase tracking-tighter">Secure Link Idle</h3>
-            <p className="max-w-xs text-sm mt-2 font-medium">Select a tracking stream to initialize communication.</p>
+          <div className="text-center opacity-30 animate-in fade-in zoom-in duration-1000">
+            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <span className="material-symbols-outlined text-5xl text-[#002045]">forum</span>
+            </div>
+            <h3 className="text-xl font-black uppercase tracking-tighter text-[#002045] italic">Secure Feed Idle</h3>
+            <p className="max-w-xs text-xs mt-3 font-bold uppercase tracking-widest leading-loose">Select a tracking stream to initialize command-level terminal communication.</p>
           </div>
         )}
       </section>

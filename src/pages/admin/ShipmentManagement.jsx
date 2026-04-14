@@ -149,219 +149,230 @@ export default function ShipmentManagement() {
 
   return (
     <>
-      <section className="p-8 space-y-8">
+      <section className="p-4 md:p-8 space-y-6 md:space-y-8 max-w-[1600px] mx-auto w-full">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2">
-            <p className="text-[var(--color-secondary)] font-bold tracking-widest text-sm uppercase">Mission Control</p>
-            <h2 className="text-5xl font-black text-[var(--color-primary)] tracking-tight leading-none">Shipment Management</h2>
+            <p className="text-[var(--color-secondary)] font-bold tracking-widest text-xs md:text-sm uppercase">Mission Control</p>
+            <h2 className="text-3xl md:text-5xl font-black text-[var(--color-primary)] tracking-tight leading-none italic">Manage Shipments</h2>
           </div>
           <button
             onClick={() => navigate('/admin/shipments/new')}
-            className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-container)] text-white px-8 py-4 rounded-xl font-bold flex items-center gap-3 shadow-lg hover:scale-105 transition-transform"
+            className="w-full md:w-auto bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-container)] text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-bold flex items-center justify-center gap-3 shadow-lg hover:scale-[1.02] transition-transform active:scale-95"
           >
             <span className="material-symbols-outlined">add_circle</span>
             Create New Shipment
           </button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl space-y-1">
-            <p className="text-[var(--color-on-surface-variant)] text-xs font-bold uppercase tracking-widest">Active Freight</p>
+        {/* Stats Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl space-y-1 border border-[var(--color-outline-variant)]/5">
+            <p className="text-[var(--color-on-surface-variant)] text-[10px] font-black uppercase tracking-widest opacity-60">Active Freight</p>
             <p className="text-3xl font-black text-[var(--color-primary)]">{loading ? '—' : pagination.total}</p>
-            <div className="pt-2 flex items-center gap-1 text-[var(--color-secondary)] text-xs font-bold">
+            <div className="pt-2 flex items-center gap-1 text-[var(--color-secondary)] text-[10px] font-black uppercase">
               <span className="material-symbols-outlined text-sm">inventory_2</span>
-              Total shipments
+              Total Manifests
             </div>
           </div>
-          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl space-y-1">
-            <p className="text-[var(--color-on-surface-variant)] text-xs font-bold uppercase tracking-widest">In Transit</p>
+          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl space-y-1 border border-[var(--color-outline-variant)]/5">
+            <p className="text-[var(--color-on-surface-variant)] text-[10px] font-black uppercase tracking-widest opacity-60">In Transit</p>
             <p className="text-3xl font-black text-[var(--color-primary)]">{loading ? '—' : stats.in_transit}</p>
-            <div className="pt-2 flex items-center gap-1 text-[var(--color-on-surface-variant)] text-xs">
-              <span className="material-symbols-outlined text-sm">schedule</span>
-              Currently moving
+            <div className="pt-2 flex items-center gap-1 text-blue-500 text-[10px] font-black uppercase">
+              <span className="material-symbols-outlined text-sm animate-pulse">local_shipping</span>
+              Currently Moving
             </div>
           </div>
-          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl border-l-4 border-[var(--color-secondary)] space-y-1">
-            <p className="text-[var(--color-on-surface-variant)] text-xs font-bold uppercase tracking-widest">Selected</p>
+          <div className="bg-[var(--color-surface-container-low)] p-6 rounded-2xl border-l-4 border-[var(--color-secondary)] space-y-1 shadow-sm">
+            <p className="text-[var(--color-on-surface-variant)] text-[10px] font-black uppercase tracking-widest opacity-60">Selected</p>
             <p className="text-3xl font-black text-[var(--color-secondary)]">{selectedIds.length}</p>
-            <div className="pt-2 text-xs font-bold text-[var(--color-secondary)]">
-              {selectedIds.length > 0 ? 'Ready for bulk action' : 'None selected'}
+            <div className="pt-2 text-[10px] font-black text-[var(--color-secondary)] uppercase tracking-wider">
+              {selectedIds.length > 0 ? 'Protocol Ready' : 'Standby Mode'}
             </div>
           </div>
-          <div className="bg-[var(--color-primary)] p-6 rounded-2xl space-y-1">
-            <p className="text-white/60 text-xs font-bold uppercase tracking-widest">Database</p>
-            <p className="text-3xl font-black text-white">{loading ? '—' : 'LIVE'}</p>
-            <div className="pt-2 text-[var(--color-on-primary-container)] text-xs font-medium italic">Connected to PostgreSQL</div>
+          <div className="bg-[var(--color-primary)] p-6 rounded-2xl space-y-1 shadow-xl shadow-[var(--color-primary)]/10">
+            <p className="text-white/40 text-[10px] font-black uppercase tracking-widest">Network</p>
+            <p className="text-3xl font-black text-white">{loading ? '...' : 'SECURE'}</p>
+            <div className="pt-2 text-white/60 text-[10px] font-bold italic tracking-tight">Connected: {window.location.hostname}</div>
           </div>
         </div>
 
-        {/* Bulk Action Bar */}
+        {/* Bulk Actions */}
         {selectedIds.length > 0 && (
-          <div className="bg-[var(--color-primary)] text-white p-4 rounded-2xl flex items-center justify-between gap-4 shadow-lg">
-            <p className="font-bold text-sm">{selectedIds.length} shipment(s) selected</p>
-            <div className="flex items-center gap-3">
+          <div className="bg-[var(--color-primary)] text-white p-4 md:p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-4 shadow-xl animate-in fade-in slide-in-from-top duration-500">
+            <div className="flex items-center gap-4">
+               <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-white">rule</span>
+               </div>
+               <div>
+                  <p className="font-black text-sm uppercase tracking-widest">{selectedIds.length} Units Targeted</p>
+                  <button onClick={() => setSelectedIds([])} className="text-[10px] font-bold text-white/50 hover:text-white transition-colors uppercase underline decoration-white/20 underline-offset-4">Abort Selection</button>
+               </div>
+            </div>
+            <div className="flex items-center gap-3 w-full md:w-auto">
               <select
                 value={bulkStatus}
                 onChange={(e) => setBulkStatus(e.target.value)}
-                className="bg-white/10 border border-white/20 text-white rounded-lg px-4 py-2 text-sm font-bold focus:outline-none"
+                className="flex-1 md:flex-none bg-white/10 border border-white/20 text-white rounded-xl px-4 py-3 text-xs font-black focus:outline-none focus:ring-2 focus:ring-white/40 transition-all uppercase tracking-tighter"
               >
-                <option value="">Select new status...</option>
-                {VALID_STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
+                <option value="" className="text-black">Update Strategy...</option>
+                {VALID_STATUSES.map((s) => <option key={s} value={s} className="text-black">{statusLabel(s)}</option>)}
               </select>
               <button
                 onClick={() => { if (bulkStatus) setShowConfirmModal(true); }}
                 disabled={!bulkStatus || bulkLoading}
-                className="bg-white text-[var(--color-primary)] px-5 py-2 rounded-lg font-bold text-sm hover:bg-white/90 transition disabled:opacity-50"
+                className="flex-1 md:flex-none bg-white text-[var(--color-primary)] px-6 py-3 rounded-xl font-black text-xs uppercase tracking-widest hover:bg-[#fea619] hover:text-[#002045] transition-all disabled:opacity-50 active:scale-95"
               >
-                {bulkLoading ? 'Updating...' : 'Apply'}
+                Execute
               </button>
-              <button onClick={() => setSelectedIds([])} className="text-white/70 hover:text-white text-sm underline">Clear</button>
             </div>
           </div>
         )}
 
-        {/* Confirm Modal */}
-        {showConfirmModal && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl">
-              <h3 className="text-xl font-black text-[var(--color-primary)] mb-2">Confirm Bulk Update</h3>
-              <p className="text-[var(--color-on-surface-variant)] text-sm mb-6">
-                Update <strong>{selectedIds.length}</strong> shipment(s) to <strong>"{statusLabel(bulkStatus)}"</strong>? This action cannot be undone.
-              </p>
-              <div className="flex gap-3">
-                <button onClick={handleBulkUpdate} className="flex-1 bg-[var(--color-primary)] text-white py-3 rounded-xl font-bold text-sm">Confirm</button>
-                <button onClick={() => setShowConfirmModal(false)} className="flex-1 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] py-3 rounded-xl font-bold text-sm">Cancel</button>
+        {/* Main Workspace */}
+        <div className="bg-[var(--color-surface-container-lowest)] rounded-[2.5rem] p-4 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-[var(--color-outline-variant)]/10">
+          {/* Controls */}
+          <div className="flex flex-col lg:flex-row justify-between items-stretch lg:items-center gap-6 mb-8">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 flex-grow max-w-4xl">
+              <div className="relative flex-grow">
+                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-variant)] text-xl opacity-40">search</span>
+                <input
+                  type="text"
+                  placeholder="SCAN TRACKING ID OR ENTITY..."
+                  className="w-full pl-12 pr-4 py-4 bg-[var(--color-surface-container-low)] border border-[var(--color-outline-variant)]/5 rounded-2xl text-[10px] font-black text-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/10 transition-all placeholder:text-[var(--color-on-surface-variant)]/30 uppercase tracking-[0.1em]"
+                  value={search}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                />
+              </div>
+              
+              <div className="flex gap-3 overflow-x-auto pb-2 md:pb-0 scrollbar-hide">
+                <select
+                  className="flex-1 md:flex-none px-5 py-4 bg-[var(--color-surface-container-low)] border border-[var(--color-outline-variant)]/5 rounded-xl text-[10px] font-black text-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/10 min-w-[150px] uppercase tracking-widest"
+                  value={statusFilter}
+                  onChange={(e) => handleStatusFilterChange(e.target.value)}
+                >
+                  <option value="">Status: All Filters</option>
+                  {VALID_STATUSES.map(s => <option key={s} value={s}>{statusLabel(s)}</option>)}
+                </select>
+
+                <select
+                  className="flex-1 md:flex-none px-5 py-4 bg-[var(--color-surface-container-low)] border border-[var(--color-outline-variant)]/5 rounded-xl text-[10px] font-black text-[var(--color-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]/10 min-w-[150px] uppercase tracking-widest"
+                  value={typeFilter}
+                  onChange={(e) => handleTypeFilterChange(e.target.value)}
+                >
+                  <option value="">Type: All Modes</option>
+                  <option value="AIR">Air Cargo</option>
+                  <option value="OCEAN">Ocean Freight</option>
+                  <option value="ROAD">Road Transport</option>
+                  <option value="RAIL">Rail Cargo</option>
+                </select>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Filters & Table */}
-        <div className="bg-[var(--color-surface-container-lowest)] p-6 rounded-3xl shadow-sm space-y-6">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex-grow max-w-xl relative">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-on-surface-variant)]">search</span>
-              <input
-                className="w-full pl-12 pr-4 py-4 bg-[var(--color-surface-container-high)] rounded-xl outline-none border-none focus:ring-2 focus:ring-[var(--color-primary)]/20 text-sm placeholder:text-[var(--color-on-surface-variant)]/50"
-                placeholder="Search Shipment ID, Port, or Consignee..."
-                type="text"
-                value={search}
-                onChange={(e) => handleSearchChange(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center gap-3">
-              <select
-                value={statusFilter}
-                onChange={(e) => handleStatusFilterChange(e.target.value)}
-                className="px-4 py-4 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] font-bold text-sm rounded-xl border-none outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
-              >
-                <option value="">All Statuses</option>
-                {VALID_STATUSES.map((s) => <option key={s} value={s}>{statusLabel(s)}</option>)}
-              </select>
-
-              <select
-                value={typeFilter}
-                onChange={(e) => handleTypeFilterChange(e.target.value)}
-                className="px-4 py-4 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] font-bold text-sm rounded-xl border-none outline-none focus:ring-2 focus:ring-[var(--color-primary)]/20"
-              >
-                <option value="">All Types</option>
-                <option value="air">Air Freight</option>
-                <option value="ocean">Ocean</option>
-                <option value="road">Road</option>
-                <option value="rail">Rail</option>
-                <option value="express">Express</option>
-                <option value="eco">Eco Friendly</option>
-              </select>
-              <button className="px-6 py-4 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] font-bold text-sm rounded-xl flex items-center gap-2 hover:bg-[var(--color-surface-container-high)] transition-colors">
-                <span className="material-symbols-outlined text-xl">download</span>
-                Export
-              </button>
-            </div>
+            <button
+               onClick={() => fetchShipments()}
+               className={`p-4 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] rounded-2xl border border-[var(--color-outline-variant)]/5 hover:bg-white transition-all shadow-sm ${loading ? 'animate-pulse' : ''}`}
+            >
+              <span className={`material-symbols-outlined text-xl ${loading ? 'animate-spin' : ''}`}>sync</span>
+            </button>
           </div>
 
-          {error && (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">{error}</div>
-          )}
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
+          {/* Table Container */}
+          <div className="overflow-x-auto -mx-4 md:-mx-0">
+            <table className="w-full text-left min-w-[1100px] border-separate border-spacing-y-2">
               <thead>
-                <tr className="bg-[var(--color-surface-container)] text-[var(--color-on-surface-variant)] text-[10px] font-black uppercase tracking-[0.2em]">
-                  <th className="px-4 py-4 rounded-l-xl">
-                    <input
-                      type="checkbox"
-                      checked={shipments.length > 0 && selectedIds.length === shipments.length}
-                      onChange={toggleSelectAll}
-                      className="rounded"
+                <tr className="text-[10px] font-black text-[var(--color-on-surface-variant)]/40 uppercase tracking-[0.2em]">
+                  <th className="pb-4 px-6 text-center w-16">
+                    <input 
+                      type="checkbox" 
+                      onChange={toggleSelectAll} 
+                      checked={shipments.length > 0 && selectedIds.length === shipments.length} 
+                      className="accent-[var(--color-primary)] scale-110" 
                     />
                   </th>
-                  <th className="px-6 py-4">Shipment ID</th>
-                  <th className="px-6 py-4">Sender</th>
-                  <th className="px-6 py-4">Receiver</th>
-                  <th className="px-6 py-4">Origin &amp; Destination</th>
-                  <th className="px-6 py-4">Type</th>
-                  <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4">ETA</th>
-                  <th className="px-6 py-4 rounded-r-xl">Actions</th>
+                  <th className="pb-4 px-6">Manifest ID</th>
+                  <th className="pb-4 px-6">Entity Profile</th>
+                  <th className="pb-4 px-6">Protocol Specs</th>
+                  <th className="pb-4 px-6">Route Logistics</th>
+                  <th className="pb-4 px-6">Operational Status</th>
+                  <th className="pb-4 px-6 text-right">Command</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-transparent">
+              <tbody className="space-y-4">
                 {loading ? (
                   Array.from({ length: 5 }).map((_, i) => (
                     <tr key={i}>
-                      <td colSpan="7" className="px-6 py-4">
-                        <div className="h-8 bg-[var(--color-surface-container-low)] rounded-xl animate-pulse"></div>
+                      <td colSpan="7" className="p-4">
+                        <div className="h-16 bg-[var(--color-surface-container-low)] rounded-2xl animate-pulse"></div>
                       </td>
                     </tr>
                   ))
                 ) : shipments.length > 0 ? (
                   shipments.map((s) => (
-                    <tr key={s.id} className={`group hover:bg-[var(--color-surface-container-low)]/50 transition-colors ${selectedIds.includes(s.id) ? 'bg-[var(--color-primary)]/5' : ''}`}>
-                      <td className="px-4 py-4">
-                        <input
-                          type="checkbox"
-                          checked={selectedIds.includes(s.id)}
-                          onChange={() => toggleSelect(s.id)}
-                          className="rounded"
-                        />
+                    <tr 
+                      key={s.id} 
+                      className={`group transition-all duration-300 ${selectedIds.includes(s.id) ? 'bg-[var(--color-primary)]/[0.03] scale-[0.995]' : 'hover:bg-white shadow-sm hover:shadow-md'}`}
+                    >
+                      <td className="py-5 px-6 text-center rounded-l-2xl border-y border-l border-[var(--color-outline-variant)]/5">
+                         <input 
+                           type="checkbox" 
+                           checked={selectedIds.includes(s.id)} 
+                           onChange={() => toggleSelect(s.id)} 
+                           className="accent-[var(--color-primary)] transition-transform active:scale-125" 
+                         />
                       </td>
-                      <td className="px-6 py-4 font-mono text-sm font-bold text-[var(--color-primary)]">{s.tracking_id}</td>
-                      <td className="px-6 py-4">
-                        <p className="text-sm font-bold text-[var(--color-secondary)]">{s.sender_name || '—'}</p>
+                      <td className="py-5 px-6 border-y border-[var(--color-outline-variant)]/5">
+                        <p className="font-mono text-xs font-black text-[var(--color-primary)] tracking-tighter">{s.tracking_id}</p>
+                        <p className="text-[9px] text-[var(--color-on-surface-variant)] font-black mt-1 uppercase opacity-30 tracking-widest">{formatDate(s.created_at)}</p>
                       </td>
-                      <td className="px-6 py-4">
-                        <p className="text-sm font-bold text-[var(--color-secondary)]">{s.receiver_name || '—'}</p>
+                      <td className="py-5 px-6 border-y border-[var(--color-outline-variant)]/5">
+                        <p className="text-xs font-black text-[var(--color-primary)] uppercase tracking-tight italic">{s.sender_name}</p>
+                        <p className="text-[10px] text-[var(--color-on-surface-variant)] font-bold mt-0.5 opacity-60 line-clamp-1">{s.sender_email}</p>
                       </td>
-                      <td className="px-6 py-4">
-                        <p className="text-sm font-medium text-[var(--color-on-surface)]">{s.origin_address}</p>
-                        <p className="text-xs text-[var(--color-on-surface-variant)] mt-0.5">→ {s.destination_address}</p>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-[var(--color-on-surface-variant)] capitalize">{typeLabel(s.shipping_type)}</td>
-                      <td className="px-6 py-4">
-                        <select
-                          value={s.status}
-                          onChange={(e) => handleStatusUpdate(s.id, e.target.value)}
-                          className={`text-xs font-bold px-2 py-1 rounded-full border-none outline-none cursor-pointer ${statusBadgeClass(s.status)}`}
-                        >
-                          {VALID_STATUSES.map((st) => <option key={st} value={st}>{statusLabel(st)}</option>)}
-                        </select>
-                      </td>
-                      <td className="px-6 py-4 text-sm text-[var(--color-on-surface-variant)]">{formatDate(s.estimated_delivery_date)}</td>
-                      <td className="px-6 py-4">
+                      <td className="py-5 px-6 border-y border-[var(--color-outline-variant)]/5">
                         <div className="flex items-center gap-2">
+                          <div className="w-8 h-8 rounded-lg bg-[var(--color-secondary)]/10 flex items-center justify-center">
+                            <span className="material-symbols-outlined text-sm text-[var(--color-secondary)]">
+                              {s.shipping_type === 'AIR' ? 'flight' : s.shipping_type === 'OCEAN' ? 'directions_boat' : 'local_shipping'}
+                            </span>
+                          </div>
+                          <div>
+                            <p className="text-[10px] font-black uppercase text-[var(--color-primary)]">{s.shipping_type}</p>
+                            <p className="text-[9px] text-[var(--color-secondary)] font-black uppercase opacity-60 tracking-tighter">{s.num_packages} Units • {s.total_weight} KG</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-5 px-6 border-y border-[var(--color-outline-variant)]/5 max-w-[220px]">
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-2">
+                             <div className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]"></div>
+                             <p className="text-[10px] font-bold text-[var(--color-on-surface)] line-clamp-1 uppercase tracking-tight">{s.origin_address}</p>
+                          </div>
+                          <div className="flex items-center gap-2">
+                             <div className="w-2 h-2 rounded-full bg-[#fea619] shadow-[0_0_8px_rgba(254,166,25,0.4)]"></div>
+                             <p className="text-[10px] font-black text-[var(--color-primary)] line-clamp-1 italic uppercase tracking-tight">{s.destination_address}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="py-5 px-6 border-y border-[var(--color-outline-variant)]/5">
+                        <div className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl transition-all ${statusBadgeClass(s.status)} shadow-sm`}>
+                          <div className="w-1.5 h-1.5 rounded-full bg-current animate-pulse"></div>
+                          <span className="text-[9px] font-black uppercase tracking-widest">{statusLabel(s.status)}</span>
+                        </div>
+                      </td>
+                      <td className="py-5 px-6 text-right rounded-r-2xl border-y border-r border-[var(--color-outline-variant)]/5">
+                        <div className="flex items-center justify-end gap-2 pr-2 opacity-40 group-hover:opacity-100 transition-opacity duration-300">
                           <button
                             onClick={() => navigate(`/admin/shipments/${s.id}`)}
-                            className="text-xs font-bold text-[var(--color-primary)] hover:text-[var(--color-secondary)] transition-colors"
-                            title="Edit"
+                            className="p-3 bg-[var(--color-surface-container-low)] text-[var(--color-primary)] rounded-xl hover:bg-white hover:shadow-xl hover:shadow-[var(--color-primary)]/10 transition-all border border-transparent hover:border-[var(--color-outline-variant)]/10 active:scale-95"
+                            title="Inspect Manifest"
                           >
-                            <span className="material-symbols-outlined text-sm">edit</span>
+                            <span className="material-symbols-outlined text-sm">visibility</span>
                           </button>
                           <button
                             onClick={() => handleDelete(s.id)}
-                            className="text-xs font-bold text-red-400 hover:text-red-600 transition-colors"
-                            title="Delete"
+                            className="p-3 bg-red-500/5 text-red-500 rounded-xl hover:bg-red-500 hover:text-white hover:shadow-xl hover:shadow-red-500/20 transition-all border border-transparent hover:border-red-500/10 active:scale-95"
+                            title="Terminal Deletion"
                           >
                             <span className="material-symbols-outlined text-sm">delete</span>
                           </button>
@@ -370,11 +381,12 @@ export default function ShipmentManagement() {
                     </tr>
                   ))
                 ) : (
-                  <tr className="group hover:bg-[var(--color-surface-container-low)]/50 transition-colors">
-                    <td className="px-6 py-20" colSpan="7">
-                      <div className="flex flex-col items-center text-[var(--color-on-surface-variant)]/50">
-                         <span className="material-symbols-outlined text-4xl mb-4">inventory_2</span>
-                         <p className="text-sm font-medium tracking-wide">Command Center: No active shipments found in current protocol.</p>
+                  <tr>
+                    <td colSpan="7" className="py-32 px-4">
+                      <div className="flex flex-col items-center justify-center opacity-30 text-center">
+                        <span className="material-symbols-outlined text-7xl mb-6">inventory_2</span>
+                        <h3 className="text-xl font-black uppercase tracking-[0.3em] mb-2">Zero Operational Units</h3>
+                        <p className="text-sm font-bold opacity-60">The logistics manifest is currently empty. Initialize a new shipment to begin.</p>
                       </div>
                     </td>
                   </tr>
@@ -383,43 +395,82 @@ export default function ShipmentManagement() {
             </table>
           </div>
 
-          {/* Pagination */}
-          <div className="flex items-center justify-between pt-8 border-t border-[var(--color-surface-container)]">
-            <p className="text-xs text-[var(--color-on-surface-variant)] font-medium">
-              Showing {shipments.length} of {pagination.total} shipments
-            </p>
-            <div className="flex gap-2">
+          {/* Footer Logistics */}
+          <div className="flex flex-col sm:flex-row items-center justify-between mt-12 pt-8 border-t border-[var(--color-outline-variant)]/10 gap-6">
+            <div className="flex flex-col items-center sm:items-start">
+               <p className="text-[10px] font-black text-[var(--color-on-surface-variant)] uppercase tracking-[0.2em] opacity-40 mb-1">Manifest Integrity</p>
+               <p className="text-xs font-bold text-[var(--color-primary)]">
+                 Showing {shipments.length} of {pagination.total} Units Verified
+               </p>
+            </div>
+
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setPage(p => Math.max(1, p - 1))}
                 disabled={page <= 1}
-                className="w-10 h-10 rounded-xl bg-[var(--color-surface-container-low)] flex items-center justify-center hover:bg-[var(--color-surface-container)] transition-colors disabled:opacity-40"
+                className="w-12 h-12 rounded-2xl bg-[var(--color-surface-container-low)] flex items-center justify-center hover:bg-white hover:shadow-xl transition-all disabled:opacity-30 border border-transparent hover:border-[var(--color-outline-variant)]/10 active:scale-95 group"
               >
-                <span className="material-symbols-outlined">chevron_left</span>
+                <span className="material-symbols-outlined group-hover:-translate-x-1 transition-transform">chevron_left</span>
               </button>
-              {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => i + 1).map((p) => (
-                <button
-                  key={p}
-                  onClick={() => setPage(p)}
-                  className={`w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm transition-colors ${
-                    page === p ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-surface-container-low)] hover:bg-[var(--color-surface-container)]'
-                  }`}
-                >
-                  {p}
-                </button>
-              ))}
+              
+              <div className="flex gap-2">
+                {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => i + 1).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setPage(p)}
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xs transition-all border ${
+                      page === p 
+                        ? 'bg-[var(--color-primary)] text-white shadow-xl shadow-[var(--color-primary)]/20 border-transparent' 
+                        : 'bg-[var(--color-surface-container-low)] text-[var(--color-primary)]/40 hover:bg-white hover:text-[var(--color-primary)] border-transparent hover:border-[var(--color-outline-variant)]/10'
+                    }`}
+                  >
+                    {p < 10 ? `0${p}` : p}
+                  </button>
+                ))}
+              </div>
+
               <button
                 onClick={() => setPage(p => Math.min(pagination.totalPages, p + 1))}
                 disabled={page >= pagination.totalPages}
-                className="w-10 h-10 rounded-xl bg-[var(--color-surface-container-low)] flex items-center justify-center hover:bg-[var(--color-surface-container)] transition-colors disabled:opacity-40"
+                className="w-12 h-12 rounded-2xl bg-[var(--color-surface-container-low)] flex items-center justify-center hover:bg-white hover:shadow-xl transition-all disabled:opacity-30 border border-transparent hover:border-[var(--color-outline-variant)]/10 active:scale-95 group"
               >
-                <span className="material-symbols-outlined">chevron_right</span>
+                <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">chevron_right</span>
               </button>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="flex-grow"></div>
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-xl z-[100] flex items-center justify-center p-6 animate-in fade-in duration-300">
+           <div className="bg-white rounded-[2.5rem] p-8 md:p-12 max-w-lg w-full shadow-2xl border border-white/20 animate-in zoom-in-95 duration-300">
+              <div className="w-20 h-20 rounded-3xl bg-[var(--color-primary)]/5 flex items-center justify-center mb-8">
+                 <span className="material-symbols-outlined text-[var(--color-primary)] text-4xl">warning</span>
+              </div>
+              
+              <h3 className="text-3xl font-black text-[var(--color-primary)] tracking-tight mb-4 italic">Confirm Protocol Change</h3>
+              <p className="text-[var(--color-on-surface-variant)] font-bold text-sm leading-relaxed mb-10 opacity-60">
+                You are about to modify the operational status of <span className="text-[var(--color-primary)] font-black">{selectedIds.length} manifest units</span> to <span className="text-[var(--color-secondary)] font-black uppercase tracking-widest">[{statusLabel(bulkStatus)}]</span>. This action is recorded and impacts live logistics.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                 <button 
+                   onClick={() => setShowConfirmModal(false)}
+                   className="flex-1 py-5 rounded-2xl bg-[var(--color-surface-container-highest)] text-[var(--color-primary)] font-black uppercase text-xs tracking-[0.2em] hover:bg-[var(--color-outline-variant)]/10 transition-colors"
+                 >
+                   Abort Change
+                 </button>
+                 <button 
+                   onClick={handleBulkUpdate}
+                   className="flex-1 py-5 rounded-2xl bg-[var(--color-primary)] text-white font-black uppercase text-xs tracking-[0.2em] hover:bg-[#fea619] hover:text-[#002045] transition-all shadow-xl shadow-[var(--color-primary)]/20 shadow-hover-none active:scale-95"
+                 >
+                   Execute Protocol
+                 </button>
+              </div>
+           </div>
+        </div>
+      )}
     </>
   );
 }

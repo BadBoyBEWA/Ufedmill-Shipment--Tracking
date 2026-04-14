@@ -26,46 +26,43 @@ export default function ForgotPassword() {
 
   return (
     <div className="bg-[var(--color-surface)] text-[var(--color-on-surface)] font-body min-h-screen flex flex-col">
-      <header className="bg-slate-50/80 backdrop-blur-xl top-0 sticky z-50 shadow-[0_12px_40px_rgba(11,28,48,0.06)] bg-gradient-to-b from-slate-100 to-transparent">
-        <div className="flex justify-between items-center px-8 py-4 w-full max-w-full">
-          <div className="flex items-center gap-4">
-            <span className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufedmill</span>
-          </div>
-          <div className="flex items-center gap-6">
-            <nav className="flex gap-8">
-              <Link to="/admin/login" className="font-sans text-sm font-medium uppercase tracking-widest text-[#43474e] hover:text-[#fea619] transition-all duration-300">Sign In</Link>
-            </nav>
-          </div>
+      <header className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm border-b border-slate-100">
+        <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
+          <Link to="/" className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufedmill</Link>
+          <nav className="flex gap-4 md:gap-8">
+            <Link to="/admin/login" className="font-sans text-[10px] font-black uppercase tracking-widest text-[#43474e] hover:text-[#fea619] transition-all">Sign In</Link>
+          </nav>
         </div>
       </header>
 
-      <main className="flex-grow flex items-center justify-center p-6 bg-[var(--color-surface-container-low)] relative overflow-hidden">
-        <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[60%] bg-[var(--color-surface-container-high)] rounded-full blur-3xl opacity-40"></div>
-        <div className="absolute bottom-[-10%] right-[-5%] w-[30%] h-[50%] bg-[var(--color-secondary-container)]/10 rounded-full blur-3xl opacity-30"></div>
+      <main className="flex-grow flex items-center justify-center p-4 md:p-8 bg-[var(--color-surface-container-low)] relative overflow-hidden">
+        <div className="absolute top-[-10%] left-[-5%] w-[40%] h-[60%] bg-[#002045]/5 rounded-full blur-3xl opacity-40"></div>
+        <div className="absolute bottom-[-10%] right-[-5%] w-[30%] h-[50%] bg-[#fea619]/10 rounded-full blur-3xl opacity-30"></div>
         
         <div className="w-full max-w-[440px] z-10">
-          <div className="bg-[var(--color-surface-container-lowest)] rounded-xl ambient-lift p-10 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1 h-full bg-silk-gradient border-l-[4px] border-[var(--color-primary)]"></div>
+          <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-6 md:p-10 relative overflow-hidden ring-1 ring-[#002045]/5">
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-[#002045] to-[#fea619]"></div>
             
-            <div className="mb-10">
-              <h1 className="font-sans text-[32px] font-black tracking-tight text-[var(--color-primary)] leading-tight mb-2">Recover Access</h1>
-              <p className="font-body text-[var(--color-on-surface-variant)] text-sm tracking-wide">Enter your institutional email to verify authority and receive a reset cipher.</p>
+            <div className="mb-10 text-center md:text-left">
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#855300] mb-2 block">RECOVERY PROTOCOL</span>
+              <h1 className="font-sans text-3xl md:text-4xl font-black tracking-tighter text-[#002045] mb-2 uppercase italic">Recover Access</h1>
+              <p className="font-body text-[#43474e] text-xs font-bold opacity-60">Enter your institutional email to verify authority and receive a reset cipher.</p>
             </div>
 
             {submitted ? (
-              <div className="space-y-6">
-                <div className="p-6 bg-green-50/50 border border-green-200 rounded-xl flex flex-col items-center text-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <span className="material-symbols-outlined text-green-600 text-2xl">mail</span>
+              <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-700">
+                <div className="p-8 bg-green-50/50 border border-green-200 rounded-3xl flex flex-col items-center text-center gap-6 shadow-sm">
+                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center shadow-inner">
+                    <span className="material-symbols-outlined text-green-600 text-3xl">mail</span>
                   </div>
-                  <div>
-                    <h3 className="font-sans font-bold text-green-900 border-none">Check your inbox</h3>
-                    <p className="text-sm text-green-800 mt-1">If an account exists for <b>{email}</b>, we've sent instructions to reset your access cipher.</p>
+                  <div className="space-y-2">
+                    <h3 className="font-sans font-black text-[#002045] uppercase tracking-tighter text-lg">Check your inbox</h3>
+                    <p className="text-[11px] text-[#43474e] font-bold leading-relaxed opacity-70">If an account exists for <b className="text-[#002045]">{email}</b>, we've sent instructions to reset your access cipher.</p>
                   </div>
                 </div>
                 <Link 
                   to="/admin/login" 
-                  className="w-full py-4 text-center font-sans text-xs font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] transition-colors block"
+                  className="w-full py-4 text-center font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[#43474e] hover:text-[#fea619] transition-all block border border-slate-100 rounded-2xl"
                 >
                   Return to Dashboard Login
                 </Link>
@@ -73,31 +70,30 @@ export default function ForgotPassword() {
             ) : (
               <form className="space-y-8" onSubmit={handleSubmit}>
                 {error && (
-                  <div className="p-4 bg-red-50 border border-red-200 rounded-lg flex items-start gap-3">
+                  <div className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 animate-in fade-in slide-in-from-top-2 duration-300">
                     <span className="material-symbols-outlined text-red-500 text-sm mt-0.5">error</span>
-                    <p className="text-red-600 text-sm font-medium">{error}</p>
+                    <p className="text-red-700 text-[10px] font-black uppercase tracking-wide leading-tight">{error}</p>
                   </div>
                 )}
 
-                <div className="group relative">
-                  <label className="block font-sans text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--color-on-surface-variant)] mb-2 ml-1">Institutional Email</label>
-                  <div className="relative flex items-center">
-                    <span className="material-symbols-outlined absolute left-0 text-[var(--color-primary-container)]/40 group-focus-within:text-[var(--color-primary)] transition-colors">alternate_email</span>
+                <div className="space-y-2 group">
+                  <label className="block font-sans text-[10px] font-black uppercase tracking-[0.2em] text-[#43474e] ml-1">Institutional Email</label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg group-focus-within:text-[#002045] transition-colors">alternate_email</span>
                     <input
                       required
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full pl-8 pr-4 py-3 outline-none bg-[var(--color-surface-container-high)] border-none border-b border-[var(--color-outline-variant)]/30 focus:ring-0 focus:bg-[var(--color-primary-fixed)]/30 transition-all font-body text-[var(--color-on-surface)] placeholder:text-[var(--color-on-surface-variant)]/40 rounded-t-lg"
+                      className="w-full pl-12 pr-4 py-4 bg-slate-50 border border-slate-100 rounded-2xl outline-none focus:ring-4 focus:ring-[#002045]/5 focus:bg-white focus:border-[#002045]/20 transition-all font-bold text-sm text-[#002045]"
                       placeholder="authority@ufedmill.com"
                     />
                   </div>
-                  <div className="absolute bottom-0 left-0 w-full h-[1px] bg-[var(--color-outline-variant)]/20 group-focus-within:h-[2px] group-focus-within:bg-[var(--color-primary)] transition-all"></div>
                 </div>
 
                 <div className="pt-4">
                   <button
-                    className="w-full bg-silk-gradient text-white font-sans font-bold py-4 rounded-lg flex items-center justify-center gap-3 group hover:shadow-xl transition-all active:scale-95 disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full bg-[#002045] text-white font-black py-4 rounded-2xl flex items-center justify-center gap-3 group hover:shadow-xl hover:shadow-[#002045]/20 transition-all active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed uppercase tracking-widest text-xs"
                     type="submit"
                     disabled={loading}
                   >
@@ -109,14 +105,14 @@ export default function ForgotPassword() {
                     ) : (
                       <>
                         <span>Send Reset Link</span>
-                        <span className="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+                        <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">send</span>
                       </>
                     )}
                   </button>
                 </div>
                 
                 <div className="text-center">
-                  <Link to="/admin/login" className="font-sans text-[10px] font-bold uppercase tracking-widest text-[var(--color-on-surface-variant)]/60 hover:text-[var(--color-primary)] transition-colors">
+                  <Link to="/admin/login" className="text-[9px] font-black uppercase tracking-[0.2em] text-[#43474e]/60 hover:text-[#fea619] transition-colors">
                     Back to Sign In
                   </Link>
                 </div>
@@ -126,10 +122,10 @@ export default function ForgotPassword() {
         </div>
       </main>
 
-      <footer className="bg-[#002045] w-full py-12 px-8">
+      <footer className="bg-[#002045] w-full py-8 md:py-12 px-6 md:px-8">
         <div className="w-full max-w-7xl mx-auto flex justify-between items-center whitespace-nowrap">
-          <span className="font-sans font-black text-[#fea619] text-sm md:text-xl">Ufedmill</span>
-          <p className="text-white font-sans text-[10px] md:text-xs opacity-60">© 2026 Restricted Interface</p>
+          <span className="font-sans font-black text-[#fea619] text-xl">Ufedmill</span>
+          <p className="text-white text-[10px] font-bold tracking-widest opacity-40 uppercase">© 2026 Restricted Interface</p>
         </div>
       </footer>
     </div>
