@@ -9,7 +9,7 @@ export default function Services() {
         <div className="absolute inset-0 z-0">
           <img 
             className="w-full h-full object-cover" 
-            alt="Ufedmill Logistics Hub" 
+            alt="Ufed Express Logistics Hub" 
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRFJcO8zLKajyM8684uxz9VSFU6lUImpQ3l-wDHECLpqkpWw4SHIVEHGCten-edfxKE3bneGgJH4Zfq116mK59v11pmMvImglA2pLiPBcrhNoo0cDfWrgYCUdSjR6LeI7G3bW37wMbobnGjBe9aNi7tQncRGnCVvmVHshkqZ4MQJjg_6CdaDud1B9R9yyqfAi_oHWPiIlW4OrRvqNVFNz8SQ2IsXtA5AyvOq6s7kIWRPZPqRbjPbf6v98gmNxF33AboE_Vl-qSoeQ" 
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#002045] via-[#002045]/80 to-transparent"></div>
@@ -20,7 +20,7 @@ export default function Services() {
               Our Logistics <br/> <span className="text-[#fea619]">Ecosystem</span>
             </h1>
             <p className="text-xl text-white/80 max-w-lg font-light leading-relaxed">
-              We provide an architectural flow for global trade. From micro-delivery to intercontinental freight, Ufedmill orchestrates every movement with clinical precision.
+              We provide an architectural flow for global trade. From micro-delivery to intercontinental freight, Ufed Express orchestrates every movement with clinical precision.
             </p>
             <div className="flex gap-4">
               <Link to="/ship-now" className="bg-gradient-to-r from-[#002045] to-[#1a365d] text-white px-8 py-4 rounded-xl font-bold flex items-center gap-2 hover:scale-105 transition-transform">

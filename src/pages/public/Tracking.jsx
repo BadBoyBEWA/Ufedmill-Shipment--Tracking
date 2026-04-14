@@ -113,7 +113,7 @@ function TrackingSearch({ inputVal, setInputVal, handleSearch }) {
           <div className="max-w-2xl w-full text-center md:text-left">
             <span className="text-[#855300] font-bold tracking-[0.2em] uppercase text-[10px] mb-4 block">REAL-TIME UPDATES</span>
             <h1 className="text-[#002045] text-5xl md:text-7xl font-black tracking-tighter mb-4 uppercase">Track Shipment</h1>
-            <p className="text-[#43474e] text-lg mb-12">Enter your Ufedmill tracking number to get the latest status update.</p>
+            <p className="text-[#43474e] text-lg mb-12">Enter your Ufed Express tracking number to get the latest status update.</p>
             <form onSubmit={handleSearch} className="flex flex-col gap-6 w-full max-w-xl mx-auto md:mx-0">
               <input
                 type="text"
@@ -186,7 +186,7 @@ function MobileResults({ shipment }) {
       {/* Mobile Top Bar */}
       <header className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm border-b border-slate-100 flex justify-between items-center px-6 py-4">
         <div className="flex items-center gap-3">
-          <Link to="/" className="font-black tracking-tighter text-[#002045] text-xl">Ufedmill</Link>
+          <Link to="/" className="font-black tracking-tighter text-[#002045] text-xl">Ufed Express</Link>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[8px] font-black uppercase tracking-widest text-[#43474e]">Support Online</span>
@@ -257,7 +257,7 @@ function MobileResults({ shipment }) {
                <div className="text-right">
                   <span className="block text-[9px] font-black text-[#43474e] uppercase mb-1 opacity-60">Service</span>
                   <p className="font-black text-[#002045] text-xs underline decoration-[#fea619] decoration-2 underline-offset-4 uppercase tracking-tighter italic">
-                    Ufedmill {(shipment.shipping_type?.replace('_', ' ') || 'Express').toUpperCase()}
+                    {shipment.shipping_type?.toLowerCase().includes('express') ? 'Ufed Express' : `Ufed Express ${shipment.shipping_type?.replace('_', ' ')}`.toUpperCase()}
                   </p>
                </div>
             </div>
@@ -334,7 +334,9 @@ function MobileResults({ shipment }) {
                       <span className="text-[9px] font-black text-[#43474e] bg-[#e5eeff] px-2 py-0.5 rounded uppercase">{dt.time}</span>
                     </div>
                     <p className="text-[10px] text-[#43474e] leading-relaxed font-bold opacity-70">
-                      {h.location || `Shipment arrived at ${shipment.destination_address?.split(',')[0]} regional sorting facility.`}
+                      {h.location || (h.status === 'shipped' 
+                        ? 'at the Custom Office through international hub terminal.' 
+                        : `Shipment arrived at ${shipment.destination_address?.split(',')[0]} regional sorting facility.`)}
                     </p>
                   </div>
                   <span className="absolute left-0 top-1 text-[8px] font-black text-[#002045] uppercase vertical-lr tracking-[0.2em] opacity-30 h-full">{dt.date}</span>
@@ -448,12 +450,14 @@ function DesktopResults({ shipment }) {
                 </div>
                 <div>
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-[#43474e] mb-1">Carrier</span>
-                  <p className="text-[#002045] font-bold text-sm">Ufedmill Logistics</p>
+                  <p className="text-[#002045] font-bold text-sm">Ufed Express Logistics</p>
                 </div>
                 <div className="text-right">
                   <span className="block text-[10px] font-bold uppercase tracking-widest text-[#43474e] mb-1">Service</span>
                   <p className="text-[#002045] font-bold text-sm underline decoration-[#fea619] decoration-2 underline-offset-4 capitalize">
-                    Ufedmill {shipment.shipping_type?.replace('_', ' ') || 'Express'}
+                    {shipment.shipping_type?.toLowerCase().includes('express') 
+                      ? 'Ufed Express' 
+                      : `Ufed Express ${shipment.shipping_type?.replace('_', ' ')}`}
                   </p>
                 </div>
               </div>
@@ -521,7 +525,11 @@ function DesktopResults({ shipment }) {
                         <h4 className="font-bold text-[#002045]">{entry.status?.replace('_', ' ')}</h4>
                         <span className="text-[10px] font-bold text-[#43474e] bg-[#e5eeff] px-2 py-1 rounded">{dt.time}</span>
                       </div>
-                      <p className="text-sm text-[#43474e] leading-relaxed">{entry.location || 'Processing through international hub terminal.'}</p>
+                      <p className="text-sm text-[#43474e] leading-relaxed">
+                        {entry.location || (entry.status === 'shipped' 
+                          ? 'at the Custom Office through international hub terminal.' 
+                          : 'Processing through international hub terminal.')}
+                      </p>
                     </div>
                     <span className="absolute left-0 top-1 text-[10px] font-black text-[#002045] uppercase vertical-lr tracking-tighter opacity-40">{dt.date}</span>
                   </div>

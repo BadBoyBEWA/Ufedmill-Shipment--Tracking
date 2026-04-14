@@ -33,7 +33,7 @@ export default function Login() {
     <div className="bg-[var(--color-surface)] text-[var(--color-on-surface)] font-body selection:bg-[var(--color-secondary-fixed)] selection:text-[var(--color-on-secondary-fixed)] min-h-screen flex flex-col">
       <header className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm border-b border-slate-100">
         <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
-          <Link to="/" className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufedmill</Link>
+          <Link to="/" className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufed Express</Link>
           <nav className="hidden md:flex gap-8">
             <Link to="/" className="font-sans text-xs font-black uppercase tracking-widest text-[#43474e] hover:text-[#fea619] transition-all">Home</Link>
             <Link to="/tracking" className="font-sans text-xs font-black uppercase tracking-widest text-[#43474e] hover:text-[#fea619] transition-all">Tracking</Link>
@@ -55,7 +55,7 @@ export default function Login() {
             <div className="mb-10 text-center md:text-left">
               <span className="text-[10px] font-black uppercase tracking-[0.2em] text-[#855300] mb-2 block">SECURE TERMINAL</span>
               <h1 className="font-sans text-3xl md:text-4xl font-black tracking-tighter text-[#002045] mb-2 uppercase italic">Command Access</h1>
-              <p className="font-body text-[#43474e] text-xs font-bold opacity-60">Enter institutional credentials to manage Ufedmill global assets.</p>
+              <p className="font-body text-[#43474e] text-xs font-bold opacity-60">Enter institutional credentials to manage Ufed Express global assets.</p>
             </div>
 
             {/* Error message */}
@@ -147,7 +147,7 @@ export default function Login() {
       <footer className="bg-[#002045] w-full py-8 md:py-12 px-6 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-7xl mx-auto items-center">
           <div className="text-center md:text-left">
-            <span className="font-sans font-black text-[#fea619] text-xl">Ufedmill</span>
+            <span className="font-sans font-black text-[#fea619] text-xl">Ufed Express</span>
             <p className="text-white text-[10px] font-bold tracking-widest opacity-40 uppercase mt-2">Architectural Precision in Motion</p>
           </div>
           <div className="flex flex-wrap justify-center md:justify-end gap-x-6 gap-y-3">

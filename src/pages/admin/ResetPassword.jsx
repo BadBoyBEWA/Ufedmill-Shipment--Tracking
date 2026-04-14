@@ -66,7 +66,7 @@ export default function ResetPassword() {
     <div className="bg-[var(--color-surface)] text-[var(--color-on-surface)] font-body min-h-screen flex flex-col">
       <header className="bg-white/80 backdrop-blur-xl sticky top-0 z-50 shadow-sm border-b border-slate-100">
         <div className="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
-          <Link to="/" className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufedmill</Link>
+          <Link to="/" className="font-sans font-black tracking-tighter text-[#002045] text-2xl">Ufed Express</Link>
           <nav className="flex gap-4 md:gap-8">
             <Link to="/admin/login" className="font-sans text-[10px] font-black uppercase tracking-widest text-[#43474e] hover:text-[#fea619] transition-all">Sign In</Link>
           </nav>
@@ -169,7 +169,7 @@ export default function ResetPassword() {
       </main>
 
       <footer className="bg-[#002045] w-full py-8 md:py-12 px-6 md:px-8 text-center">
-        <span className="font-sans font-black text-[#fea619] text-xl">Ufedmill</span>
+        <span className="font-sans font-black text-[#fea619] text-xl">Ufed Express</span>
         <p className="text-white text-[10px] font-bold tracking-widest opacity-40 uppercase mt-2">© 2026 Institutional Interface</p>
       </footer>
     </div>

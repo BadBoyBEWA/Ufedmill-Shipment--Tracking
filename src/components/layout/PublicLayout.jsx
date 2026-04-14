@@ -14,7 +14,7 @@ function PublicNavbar({ path }) {
     <header className="bg-slate-50/80 dark:bg-[#0b1c30]/80 backdrop-blur-xl docked full-width top-0 sticky z-50 shadow-[0_12px_40px_rgba(11,28,48,0.06)]">
       <div className="flex justify-between items-center px-8 py-4 w-full max-w-full">
         <Link to="/" className="flex items-center gap-4">
-          <span className="font-sans font-black tracking-tighter text-[#002045] dark:text-[#f8f9ff] text-2xl">Ufedmill</span>
+          <span className="font-sans font-black tracking-tighter text-[#002045] dark:text-[#f8f9ff] text-2xl">Ufed Express</span>
         </Link>
         <nav className="hidden md:flex gap-8 items-center ml-auto">
           <Link className={getLinkClasses('/admin/login')} to="/admin/login">Login</Link>
@@ -32,11 +32,11 @@ function PublicFooter() {
     <footer className="bg-[#002045] dark:bg-[#050b14] w-full py-12 px-8 mt-auto relative z-10">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
         <div className="space-y-6">
-          <span className="font-sans font-black text-[#fea619] text-2xl mb-4 block uppercase tracking-tighter">Ufedmill</span>
+          <span className="font-sans font-black text-[#fea619] text-2xl mb-4 block uppercase tracking-tighter">Ufed Express</span>
           <p className="text-white/60 font-sans text-xs max-w-sm mb-6 leading-relaxed">
             Architectural Precision in Motion. Elevating global logistics through technology, command-level oversight, and strategic design.
           </p>
-          <p className="text-white font-sans text-xs tracking-wide opacity-80">© 2026 Ufedmill. All rights reserved.</p>
+          <p className="text-white font-sans text-xs tracking-wide opacity-80">© 2026 Ufed Express. All rights reserved.</p>
         </div>
         <div className="grid grid-cols-2 gap-4">
           <div className="space-y-3">
@@ -79,6 +79,10 @@ function MobileBottomNav({ path }) {
       <Link className={getNavClasses('/services')} to="/services">
         <span className="material-symbols-outlined">hub</span>
         <span className="font-sans text-[10px] font-bold uppercase mt-1">Services</span>
+      </Link>
+      <Link className={getNavClasses('/admin/login')} to="/admin/login">
+        <span className="material-symbols-outlined">key</span>
+        <span className="font-sans text-[10px] font-bold uppercase mt-1">Login</span>
       </Link>
     </nav>
   );

@@ -89,10 +89,14 @@ export default function ShipmentManagement() {
     setPage(1);
   };
 
-  // Status update for single row
   const handleStatusUpdate = async (id, newStatus) => {
     try {
-      const res = await api.put(`/shipments/${id}`, { status: newStatus });
+      const payload = { status: newStatus };
+      if (newStatus === 'shipped') {
+        payload.location = "at the Custom Office through international hub terminal.";
+        payload.message = "Going through custom checks";
+      }
+      const res = await api.put(`/shipments/${id}`, payload);
       await api.parseResponse(res);
       setShipments((prev) => prev.map((s) => s.id === id ? { ...s, status: newStatus } : s));
     } catch {
@@ -116,9 +120,13 @@ export default function ShipmentManagement() {
   const handleBulkUpdate = async () => {
     if (!bulkStatus || selectedIds.length === 0) return;
     setBulkLoading(true);
-    setShowConfirmModal(false);
     try {
-      const res = await api.post('/shipments/bulk', { ids: selectedIds, status: bulkStatus });
+      const payload = { ids: selectedIds, status: bulkStatus };
+      if (bulkStatus === 'shipped') {
+        payload.location = "at the Custom Office through international hub terminal.";
+        payload.message = "Going through custom checks";
+      }
+      const res = await api.post('/shipments/bulk', payload);
       await api.parseResponse(res);
       setSelectedIds([]);
       setBulkStatus('');

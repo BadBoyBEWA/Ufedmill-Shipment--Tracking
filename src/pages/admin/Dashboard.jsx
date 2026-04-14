@@ -209,7 +209,9 @@ export default function Dashboard() {
                         {activity.action.replace(/_/g, ' ').toLowerCase()}
                       </p>
                       <p className="text-[10px] text-[var(--color-on-surface-variant)] mt-0.5 line-clamp-2">
-                        {activity.details?.message || activity.action.replace(/_/g, ' ').toLowerCase()}
+                        {activity.details?.message || (activity.details?.status === 'shipped' || activity.details?.newStatus === 'shipped'
+                          ? 'Going through custom checks' 
+                          : activity.action.replace(/_/g, ' ').toLowerCase())}
                       </p>
                       <p className="text-[9px] text-[var(--color-on-surface-variant)] opacity-50 uppercase font-black mt-1">
                         {activity.admin_name || 'System Admin'} • {new Date(activity.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}

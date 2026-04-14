@@ -63,7 +63,7 @@ export default function AdminLayout() {
               <div className="w-10 h-10 bg-[var(--color-secondary)]/10 rounded-xl flex items-center justify-center">
                 <span className="material-symbols-outlined text-[var(--color-secondary)] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>deployed_code</span>
               </div>
-              <h2 className="text-white font-black text-xl tracking-tighter uppercase italic">Ufedmill</h2>
+              <h2 className="text-white font-black text-xl tracking-tighter uppercase italic">Ufed Express</h2>
             </div>
             {/* Close button for mobile */}
             <button 

@@ -1,5 +1,5 @@
 /**
- * Fetch-based API client for Ufedmill.
+ * Fetch-based API client for Ufed Express.
  * Handles: base URL, auth tokens, token refresh on 401, JSON parsing.
  */
 

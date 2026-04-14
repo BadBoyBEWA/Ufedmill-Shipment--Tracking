@@ -178,7 +178,7 @@ export default function Audit() {
                   <span className="material-symbols-outlined text-[var(--color-on-secondary-container)]" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
                 </div>
                 <div>
-                  <h5 className="text-[var(--color-primary)] font-bold">The Ufedmill Guarantee</h5>
+                  <h5 className="text-[var(--color-primary)] font-bold">The Ufed Express Guarantee</h5>
                   <p className="text-[var(--color-on-surface-variant)] text-sm mt-1">Every audit is performed by senior logistics architects with a minimum of 15 years operational tenure.</p>
                 </div>
               </div>

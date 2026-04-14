@@ -9,7 +9,7 @@ export default function ShipNow() {
         {/* Page Headline */}
         <div className="mb-12 mt-8">
           <h2 className="text-5xl font-black tracking-tight text-[var(--color-primary)] mb-2">Create Shipment</h2>
-          <p className="text-[var(--color-on-surface-variant)] text-lg max-w-2xl">Initialize a new logistical movement within the Ufedmill network. Precision starts with data.</p>
+          <p className="text-[var(--color-on-surface-variant)] text-lg max-w-2xl">Initialize a new logistical movement within the Ufed Express network. Precision starts with data.</p>
         </div>
         
         {/* Progress Stepper */}
@@ -57,7 +57,7 @@ export default function ShipNow() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-primary)] px-1">Full Name</label>
-                  <input className="bg-[var(--color-surface-container-high)] border-none border-b-2 border-transparent focus:border-[var(--color-primary)] focus:ring-0 h-14 px-4 rounded-t-lg transition-all outline-none" placeholder="Johnathan Ufedmill" type="text"/>
+                  <input className="bg-[var(--color-surface-container-high)] border-none border-b-2 border-transparent focus:border-[var(--color-primary)] focus:ring-0 h-14 px-4 rounded-t-lg transition-all outline-none" placeholder="Johnathan Ufed Express" type="text"/>
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-[10px] font-bold uppercase tracking-widest text-[var(--color-primary)] px-1">Organization (Optional)</label>
@@ -113,7 +113,7 @@ export default function ShipNow() {
             <div className="bg-white p-8 rounded-3xl shadow-[0_12px_40px_rgba(11,28,48,0.06)] border border-[var(--color-surface-container)]">
               <span className="material-symbols-outlined text-[var(--color-secondary)] mb-4 text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>verified_user</span>
               <h4 className="text-lg font-bold text-[var(--color-primary)] mb-2">Authority Protocol</h4>
-              <p className="text-sm text-[var(--color-on-surface-variant)] leading-relaxed">All sender data is encrypted under the Ufedmill Security Framework. Your coordinates are used solely for route optimization.</p>
+              <p className="text-sm text-[var(--color-on-surface-variant)] leading-relaxed">All sender data is encrypted under the Ufed Express Security Framework. Your coordinates are used solely for route optimization.</p>
             </div>
           </div>
         </div>
