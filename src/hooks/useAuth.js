@@ -50,6 +50,9 @@ export function useAuth() {
     setAdmin(data.admin);
     setIsAuthenticated(true);
 
+    // Small delay to ensure token is ready for subsequent requests
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
     return data;
   }, []);
 
